@@ -31,12 +31,12 @@ const HeroBanner = () => {
                     patients&apos; data remains confidential, tamper-proof, and accessible only to authorized personnel.
                 </p>
 
-                <div className="mt-8 flex flex-wrap gap-4 text-center">
+                <div className="mt-8 flex flex-wrap gap-4 justify-center md:justify-start text-center">
                     {
                         ready && authenticated && (
                             <Link
                                 href="/me/dashboard"
-                                className="block w-full rounded bg-rose-600 px-12 py-3 text-sm font-medium text-white shadow hover:bg-rose-700 focus:outline-none focus:ring active:bg-rose-500 sm:w-auto"
+                                className="rounded bg-rose-600 px-12 py-3 text-sm font-medium text-white shadow hover:bg-rose-700 focus:outline-none focus:ring active:bg-rose-500 sm:w-auto"
                             >
                                 Go to dashboard
                             </Link>

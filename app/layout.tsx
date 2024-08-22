@@ -22,9 +22,9 @@ export default function RootLayout({
 
   return (
     <html lang="en">
-      <body className={cn(inter.className, 'min-h-screen bg-slate-100')}>
+      <body className={cn(inter.className, 'min-h-screen bg-slate-100 min-w-[450px]')}>
       <PrivyProvider
-          appId="clzwfhfet06jhlf1ii58ghty4"
+          appId={process.env.privyAppId!.toString()}
           config={{
             // Customize Privy's appearance in your app
             appearance: {
