@@ -1,10 +1,9 @@
 
 import {abi} from '@/blockchain/artifacts/contracts/MedSafe.sol/MedSafe.json'
-import config from '@/blockchain/networks.json';
 import {ConnectedWallet} from "@privy-io/react-auth";
 import {ethers} from "ethers";
-import {IAuthNavLink, IMedicalRecord, IPatientData, IPhysicianData} from "@/lib/types";
-import {selectedChain} from "@/lib/supported_chains";
+import {IMedicalRecord, IPatientData, IPhysicianData} from "@/lib/types";
+import {networkConfig} from "@/blockchain/networks.config";
 
 
 // const selectedNetworkId = `${selectedChain!.id}`;
@@ -18,7 +17,7 @@ export const initializeContract = async (wallet: ConnectedWallet, selectedNetwor
     const provider = await wallet.getEthersProvider();
 
     // @ts-ignore
-    const contractAddress = config[selectedNetworkId]['medSafe'].address;
+    const contractAddress = networkConfig[selectedNetworkId].medSafe.address;
     const signer = provider.getSigner();
 
     const contract = new ethers.Contract(contractAddress, abi, signer);
