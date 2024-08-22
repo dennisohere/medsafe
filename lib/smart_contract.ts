@@ -3,7 +3,7 @@ import {abi} from '@/blockchain/artifacts/contracts/MedSafe.sol/MedSafe.json'
 import {ConnectedWallet} from "@privy-io/react-auth";
 import {ethers} from "ethers";
 import {IMedicalRecord, IPatientData, IPhysicianData} from "@/lib/types";
-import {networkConfig} from "@/blockchain/networks.config";
+import {networkConfig} from "@/networks.config";
 
 
 // const selectedNetworkId = `${selectedChain!.id}`;

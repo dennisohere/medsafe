@@ -3,10 +3,11 @@ import {usePrivy} from "@privy-io/react-auth";
 import Link from "next/link";
 import {useAppSelector} from "@/store/store";
 import {useRouter} from "next/navigation";
+import {Badge} from "@/components/ui/badge";
 
 const Navbar = () => {
     const {ready, authenticated, logout} = usePrivy();
-    const {displayName} = useAppSelector((state) => state.app)
+    const {displayName, blockchain} = useAppSelector((state) => state.app)
     const router = useRouter();
 
     const logoutUser = async () => {
@@ -24,6 +25,28 @@ const Navbar = () => {
                     </Link>
                 </div>
                 <div className="flex-none">
+                    {
+                        ready && authenticated && (
+                            <>
+                                {
+                                    blockchain?.isPatient() && (
+                                        <span>Logged in as <Badge>Patient</Badge></span>
+                                    )
+                                }
+                                {
+                                    blockchain?.isPhysician() && (
+                                        <span>Logged in as <Badge>Physician</Badge></span>
+                                    )
+                                }
+                                {
+                                    !blockchain?.currentUserRole && (
+                                        <Badge variant='destructive'>No profile found!</Badge>
+                                    )
+                                }
+                            </>
+                        )
+                    }
+
                     {
                         ready && authenticated && (
                             <div className="dropdown dropdown-end">
@@ -46,6 +69,7 @@ const Navbar = () => {
                             </div>
                         )
                     }
+
                 </div>
             </div>
         </div>

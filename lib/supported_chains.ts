@@ -28,7 +28,6 @@ export type SupportedChain = 'localhost' | 'sepolia' | 'polygonAmoy';
 export const supportedChainsConfig : Map<SupportedChain, Chain> = new Map([
     ['localhost', localhost],
     ['sepolia', sepolia],
-    ['sepolia', sepolia],
     ['polygonAmoy', polygonAmoy],
 ]);
 
