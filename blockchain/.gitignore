@@ -1,0 +1,7 @@
+package-lock.json
+node_modules
+.env.local
+.env
+/artifacts
+/cache
+/ignition
