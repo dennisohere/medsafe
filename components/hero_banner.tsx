@@ -26,7 +26,9 @@ const HeroBanner = () => {
                 </h1>
 
                 <p className="mt-8 max-w-xl text-white sm:text-xl/relaxed">
-                    MedSafe harnesses the power of blockchain technology to provide unparalleled security for Electronic Health Records (EHRs). Our innovative Web3 application ensures that your patients' data remains confidential, tamper-proof, and accessible only to authorized personnel.
+                    MedSafe harnesses the power of blockchain technology to provide unparalleled security
+                    for Electronic Health Records (EHRs). Our innovative Web3 application ensures that your
+                    patients&apos; data remains confidential, tamper-proof, and accessible only to authorized personnel.
                 </p>
 
                 <div className="mt-8 flex flex-wrap gap-4 text-center">
