@@ -4,9 +4,9 @@ import {BiconomySmartAccountV2, PaymasterMode} from "@biconomy/account";
 
 
 export class BlockchainWithGasSponsorship extends Blockchain {
-    smartAccount?: BiconomySmartAccountV2 | undefined;
+    smartAccount?: BiconomySmartAccountV2;
 
-    constructor(contract: ethers.Contract, smartAccount?: BiconomySmartAccountV2 | undefined) {
+    constructor(contract: ethers.Contract, smartAccount?: BiconomySmartAccountV2) {
         super(contract);
         this.smartAccount = smartAccount;
     }
