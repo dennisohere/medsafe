@@ -1,19 +1,29 @@
 import {Blockchain} from "@/lib/services/blockchain";
 import {ethers} from "ethers";
-import {BiconomySmartAccountV2, PaymasterMode} from "@biconomy/account";
+import {BiconomySmartAccountV2, createSmartAccountClient, PaymasterMode} from "@biconomy/account";
+import {networkConfig} from "@/networks.config";
+import {selectedChain} from "@/lib/supported_chains";
 
 
 export class BlockchainWithGasSponsorship extends Blockchain {
-    smartAccount?: BiconomySmartAccountV2;
 
-    constructor(contract: ethers.Contract, smartAccount?: BiconomySmartAccountV2) {
+    constructor(contract: ethers.Contract) {
         super(contract);
-        this.smartAccount = smartAccount;
     }
 
     async send(tx: ethers.PopulatedTransaction) {
+
+        // @ts-ignore
+        const paymaster = networkConfig[selectedChain!.id.toString()]!.paymaster;
+
+        const smartAccount = await createSmartAccountClient({
+            signer: this.contract.signer,
+            bundlerUrl: paymaster.bundlerUrl,
+            biconomyPaymasterApiKey: paymaster.apiKey,
+        });
+
         const userOpResponse =
-            await this.smartAccount!.sendTransaction({
+            await smartAccount!.sendTransaction({
                 to: this.contract.address,
                 data: tx.data!,
             }, {

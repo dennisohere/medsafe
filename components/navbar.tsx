@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react'
+import React from 'react'
 import {usePrivy} from "@privy-io/react-auth";
 import Link from "next/link";
 import {useAppSelector} from "@/store/store";
@@ -23,19 +23,17 @@ const Navbar = () => {
                         <span className=" text-rose-600">Med</span>
                         <span className='font-bold '>Safe</span>
                     </Link>
-                </div>
-                <div className="flex-none">
                     {
                         ready && authenticated && (
                             <>
                                 {
                                     blockchain?.isPatient() && (
-                                        <span>Logged in as <Badge>Patient</Badge></span>
+                                        <span><Badge>Patient</Badge></span>
                                     )
                                 }
                                 {
                                     blockchain?.isPhysician() && (
-                                        <span>Logged in as <Badge>Physician</Badge></span>
+                                        <span><Badge>Physician</Badge></span>
                                     )
                                 }
                                 {
@@ -46,7 +44,8 @@ const Navbar = () => {
                             </>
                         )
                     }
-
+                </div>
+                <div className="flex-none">
                     {
                         ready && authenticated && (
                             <div className="dropdown dropdown-end">

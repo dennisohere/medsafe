@@ -18,7 +18,6 @@ const AuthenticatedLayout = ({children}: Readonly<{
             console.log("authLayout:init", currentUserRole);
             if(user == null) return ;
             if(blockchain == null) return ;
-            await blockchain.initUserRole(user.id);
             setCurrentUserRole(blockchain.currentUserRole!);
             console.log('authLayout: user role', blockchain.currentUserRole, currentUserRole);
             setBlockchain(blockchain);

@@ -20,23 +20,13 @@ export const initializeContract = async (wallet: ConnectedWallet, selectedNetwor
     const contract = new ethers.Contract(contractAddress, abi, signer);
 
     // @ts-ignore
-    const {bundlerUrl, apiKey} = networkConfig[selectedNetworkId]!.paymaster;
-
-
-    let smartAccount: BiconomySmartAccountV2 | undefined;
-
-    if(!!bundlerUrl && !!apiKey){
-        smartAccount = await createSmartAccountClient({
-            signer: signer,
-            bundlerUrl: bundlerUrl,
-            biconomyPaymasterApiKey: apiKey,
-        });
-    }
+    const paymaster = networkConfig[selectedNetworkId]!.paymaster;
 
     return {
         contract,
         contractAddress,
         provider,
-        smartAccount,
+        paymaster,
+        signer,
     };
 }
