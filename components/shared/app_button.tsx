@@ -3,7 +3,7 @@ import {ButtonProps} from "react-day-picker";
 import {Button} from "@/components/ui/button";
 import {Loader2} from "lucide-react";
 
-export type AppButtonState = 'initial' | 'loading' | 'error';
+type AppButtonState = 'initial' | 'loading' | 'error';
 
 interface AppButtonProps extends ButtonProps {
     state?: AppButtonState;
@@ -49,4 +49,4 @@ const AppButton = forwardRef<HTMLButtonElement, AppButtonProps>((props, ref) => 
 
 AppButton.displayName = "Button"
 
-export default AppButton
+export {AppButton, type AppButtonState}
