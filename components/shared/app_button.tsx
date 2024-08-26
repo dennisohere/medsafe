@@ -9,7 +9,7 @@ interface AppButtonProps extends ButtonProps {
     state?: AppButtonState;
 }
 
-export const AppButton = forwardRef<HTMLButtonElement, AppButtonProps>((props, ref) => {
+const AppButton = forwardRef<HTMLButtonElement, AppButtonProps>((props, ref) => {
     const {state, onClick, children, ...otherProps} = props
     const [currentButtonState, setCurrentButtonState] = useState<AppButtonState>(state || 'initial')
 
@@ -46,3 +46,7 @@ export const AppButton = forwardRef<HTMLButtonElement, AppButtonProps>((props, r
         </Button>
     )
 })
+
+AppButton.displayName = "Button"
+
+export default AppButton
