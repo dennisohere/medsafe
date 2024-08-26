@@ -1,14 +1,14 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
 import {ConnectedWallet, User} from "@privy-io/react-auth";
-import {BlockchainConnector} from "@/lib/smart_contract";
 import {AllowedAuthNavLink} from "@/lib/types";
+import {Blockchain} from "@/lib/services/blockchain";
 
 export interface IAppState {
     authenticated: boolean;
     wallet?: ConnectedWallet | null | undefined;
     user?: User | undefined | null;
-    blockchain?: BlockchainConnector | undefined;
+    blockchain?: Blockchain | undefined;
     displayName?: string | undefined | null;
     selectedDashboardTab: AllowedAuthNavLink;
 }
@@ -35,7 +35,7 @@ export const appSlice = createSlice({
         setWallet: (state, action: PayloadAction<ConnectedWallet | null>) => {
             state.wallet = action.payload;
         },
-        setBlockchain: (state, action: PayloadAction<BlockchainConnector>) => {
+        setBlockchain: (state, action: PayloadAction<Blockchain>) => {
             // @ts-ignore
             state.blockchain = action.payload;
         },

@@ -9,10 +9,11 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@biconomy/account": "^4.6.1",
     "@heroicons/react": "^2.1.5",
     "@hookform/resolvers": "^3.9.0",
     "@nomicfoundation/hardhat-ignition": "^0.15.5",
-    "@privy-io/react-auth": "^1.79.0",
+    "@privy-io/react-auth": "^1.80.0",
     "@radix-ui/react-dialog": "^1.1.1",
     "@radix-ui/react-label": "^2.1.0",
     "@radix-ui/react-popover": "^1.1.1",

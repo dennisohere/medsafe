@@ -2,37 +2,26 @@
 
 import * as React from "react"
 
-import { Button } from "@/components/ui/button"
 import {
     Card,
     CardContent,
-    CardDescription,
-    CardHeader,
-    CardTitle,
 } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
-import {
-    Select,
-    SelectContent,
-    SelectItem,
-    SelectTrigger,
-    SelectValue,
-} from "@/components/ui/select"
-import {usePrivy} from "@privy-io/react-auth";
 import {z} from "zod";
 import {useForm} from "react-hook-form";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {Form, FormControl, FormField, FormItem, FormLabel, FormMessage} from "@/components/ui/form";
-import {MedicalRecordFormSchema, PhysicianFormSchema} from "@/lib/utils";
+import {MedicalRecordFormSchema} from "@/lib/utils";
 import {useAppSelector} from "@/store/store";
 import {useRouter} from "next/navigation";
+import {AppButton, AppButtonState} from "@/components/shared/app_button";
 
 
 
 const RenderMedicalRecordForm = ({patientUserId}: {patientUserId: string}) => {
-    const {ready} = usePrivy();
     const {blockchain, user} = useAppSelector(state => state.app);
     const router = useRouter();
+    const [buttonState, setButtonState] = React.useState<AppButtonState>('initial');
 
     const form = useForm<z.infer<typeof MedicalRecordFormSchema>>({
         resolver: zodResolver(MedicalRecordFormSchema),
@@ -45,6 +34,7 @@ const RenderMedicalRecordForm = ({patientUserId}: {patientUserId: string}) => {
 
 
     const onSubmit = async (formData: z.infer<typeof MedicalRecordFormSchema>) => {
+        setButtonState('loading');
         console.log('medical record data', formData);
 
         await blockchain!.addMedicalRecord(
@@ -55,6 +45,7 @@ const RenderMedicalRecordForm = ({patientUserId}: {patientUserId: string}) => {
         );
 
         form.reset();
+        setButtonState('initial');
         router.refresh();
     }
 
@@ -91,7 +82,7 @@ const RenderMedicalRecordForm = ({patientUserId}: {patientUserId: string}) => {
                             name='treatment'/>
 
 
-                        <Button type="submit">Submit</Button>
+                        <AppButton state={buttonState} type="submit">Submit</AppButton>
                     </form>
                 </Form>
             </CardContent>

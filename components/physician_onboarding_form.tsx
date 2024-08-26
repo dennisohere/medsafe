@@ -1,8 +1,6 @@
 "use client";
 
 import * as React from "react"
-
-import { Button } from "@/components/ui/button"
 import {
     Card,
     CardContent,
@@ -10,7 +8,7 @@ import {
     CardHeader,
     CardTitle,
 } from "@/components/ui/card"
-import { Input } from "@/components/ui/input"
+import {Input} from "@/components/ui/input"
 import {
     Select,
     SelectContent,
@@ -26,13 +24,14 @@ import {Form, FormControl, FormField, FormItem, FormLabel, FormMessage} from "@/
 import {PhysicianFormSchema} from "@/lib/utils";
 import {useAppSelector} from "@/store/store";
 import {useRouter} from "next/navigation";
-
+import {AppButton, AppButtonState} from "@/components/shared/app_button";
 
 
 const PhysicianOnboardingForm = () => {
     const {ready} = usePrivy();
-    const {blockchain, user} = useAppSelector(state => state.app);
+    const {blockchain, user, wallet} = useAppSelector(state => state.app);
     const router = useRouter();
+    const [buttonState, setButtonState] = React.useState<AppButtonState>('initial');
 
     const form = useForm<z.infer<typeof PhysicianFormSchema>>({
         resolver: zodResolver(PhysicianFormSchema),
@@ -47,7 +46,7 @@ const PhysicianOnboardingForm = () => {
 
 
     const onSubmit = async (formData: z.infer<typeof PhysicianFormSchema>) => {
-        console.log(formData);
+        setButtonState('loading');
 
         await blockchain!.addPhysician(user!.id,
             formData.firstName,
@@ -55,9 +54,10 @@ const PhysicianOnboardingForm = () => {
             formData.email,
             formData.gender,
             formData.specialty,
-            );
+        );
 
         form.reset();
+        setButtonState('initial');
         router.push('/me/dashboard')
     }
 
@@ -74,26 +74,26 @@ const PhysicianOnboardingForm = () => {
                         <div className="grid grid-cols-2 flex-col gap-x-4 ">
                             <FormField
                                 control={form.control}
-                                render={({ field }) => (
+                                render={({field}) => (
                                     <FormItem>
                                         <FormLabel>First name</FormLabel>
                                         <FormControl>
                                             <Input {...field} />
                                         </FormControl>
-                                        <FormMessage />
+                                        <FormMessage/>
                                     </FormItem>
                                 )}
                                 name='firstName'/>
 
                             <FormField
                                 control={form.control}
-                                render={({ field }) => (
+                                render={({field}) => (
                                     <FormItem>
                                         <FormLabel>Last name</FormLabel>
                                         <FormControl>
                                             <Input {...field} />
                                         </FormControl>
-                                        <FormMessage />
+                                        <FormMessage/>
                                     </FormItem>
                                 )}
                                 name='lastName'/>
@@ -102,13 +102,13 @@ const PhysicianOnboardingForm = () => {
                         <div className="grid grid-cols-2 flex-col gap-x-4">
                             <FormField
                                 control={form.control}
-                                render={({ field }) => (
+                                render={({field}) => (
                                     <FormItem>
                                         <FormLabel>Gender</FormLabel>
                                         <Select onValueChange={field.onChange} defaultValue={field.value}>
                                             <FormControl>
                                                 <SelectTrigger>
-                                                    <SelectValue  />
+                                                    <SelectValue/>
                                                 </SelectTrigger>
                                             </FormControl>
                                             <SelectContent>
@@ -116,7 +116,7 @@ const PhysicianOnboardingForm = () => {
                                                 <SelectItem value="female">Female</SelectItem>
                                             </SelectContent>
                                         </Select>
-                                        <FormMessage />
+                                        <FormMessage/>
                                     </FormItem>
                                 )}
                                 name='gender'/>
@@ -124,32 +124,30 @@ const PhysicianOnboardingForm = () => {
 
                         <FormField
                             control={form.control}
-                            render={({ field }) => (
+                            render={({field}) => (
                                 <FormItem>
                                     <FormLabel>Email</FormLabel>
                                     <FormControl>
                                         <Input {...field} />
                                     </FormControl>
-                                    <FormMessage />
+                                    <FormMessage/>
                                 </FormItem>
                             )}
                             name='email'/>
 
                         <FormField
                             control={form.control}
-                            render={({ field }) => (
+                            render={({field}) => (
                                 <FormItem>
                                     <FormLabel>Specialty</FormLabel>
                                     <FormControl>
                                         <Input {...field} />
                                     </FormControl>
-                                    <FormMessage />
+                                    <FormMessage/>
                                 </FormItem>
                             )}
                             name='specialty'/>
-
-
-                        <Button type="submit">Submit</Button>
+                        <AppButton state={buttonState} type="submit">Submit</AppButton>
                     </form>
                 </Form>
             </CardContent>

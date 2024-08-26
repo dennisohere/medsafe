@@ -30,6 +30,7 @@ import {CalendarIcon} from "lucide-react";
 import {format} from "date-fns";
 import {useAppSelector} from "@/store/store";
 import {useRouter} from "next/navigation";
+import {AppButton, AppButtonState} from "@/components/shared/app_button";
 
 
 
@@ -37,6 +38,8 @@ const PatientOnboardingForm = () => {
     const {ready} = usePrivy();
     const {blockchain, user} = useAppSelector(state => state.app);
     const router = useRouter();
+    const [buttonState, setButtonState] = React.useState<AppButtonState>('initial');
+
 
     const form = useForm<z.infer<typeof PatientFormSchema>>({
         resolver: zodResolver(PatientFormSchema),
@@ -55,6 +58,7 @@ const PatientOnboardingForm = () => {
 
 
     const onSubmit = async (formData: z.infer<typeof PatientFormSchema>) => {
+        setButtonState('loading');
         console.log(formData);
 
         await blockchain!.addPatient(user!.id,
@@ -69,6 +73,8 @@ const PatientOnboardingForm = () => {
             formData.emergencyContactPhone,);
 
         form.reset();
+        setButtonState('initial');
+
         router.push('/me/dashboard')
     }
 
@@ -243,7 +249,7 @@ const PatientOnboardingForm = () => {
                             )}
                             name='emergencyContactAddress'/>
 
-                        <Button type="submit">Submit</Button>
+                        <AppButton state={buttonState} type="submit">Submit</AppButton>
                     </form>
                 </Form>
             </CardContent>

@@ -1,9 +1,11 @@
 import React, {useEffect} from 'react'
 import {Provider, useDispatch} from "react-redux";
 import {ConnectedWallet, usePrivy, useWallets} from "@privy-io/react-auth";
-import {BlockchainConnector, initializeContract} from "@/lib/smart_contract";
+import {initializeContract} from "@/lib/smart_contract";
 import {setAuthenticated, setBlockchain, setDisplayName, setUser, setWallet} from "@/store/appSlice";
 import {selectedChain} from "@/lib/supported_chains";
+import {Blockchain} from "@/lib/services/blockchain";
+import {BlockchainWithGasSponsorship} from "@/lib/services/blockchain_with_gas_sponsorship";
 
 
 const App = ({children}: Readonly<{ children: React.ReactNode; }>) => {
@@ -24,8 +26,8 @@ const App = ({children}: Readonly<{ children: React.ReactNode; }>) => {
         dispatch(setDisplayName(userEmail));
 
         if(!!wallet){
-            const {contract, contractAddress, provider} = await initializeContract(wallet, selectedChain!.id!.toString())
-            const blockchain = new BlockchainConnector(contract);
+            const {contract, smartAccount} = await initializeContract(wallet, selectedChain!.id!.toString())
+            const blockchain = new BlockchainWithGasSponsorship(contract, smartAccount);
             console.log('app:', blockchain, contract)
             dispatch(setBlockchain(blockchain));
         }
