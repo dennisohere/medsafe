@@ -12,7 +12,9 @@ const nextConfig = {
         sepoliaPaymasterApiKey: process.env.SEPOLIA_PAYMASTER_API_KEY,
 
         polygonAmoyBundlerUrl: process.env.POLYGON_AMOY_BUNDLER_URL,
-        polygonAmoyPaymasterApiKey: process.env.POLYGON_AMOY_PAYMASTER_API_KEY
+        polygonAmoyPaymasterApiKey: process.env.POLYGON_AMOY_PAYMASTER_API_KEY,
+
+        usePaymaster: process.env.USE_PAYMASTER
     }
 };
 

@@ -26,9 +26,9 @@ const App = ({children}: Readonly<{ children: React.ReactNode; }>) => {
         dispatch(setDisplayName(userEmail));
 
         if(!!wallet){
-            const {contract, paymaster} = await initializeContract(wallet, selectedChain!.id!.toString())
+            const {contract, usePaymaster} = await initializeContract(wallet, selectedChain!.id!.toString())
             let blockchain;
-            if(!!paymaster){
+            if(usePaymaster){
                 blockchain = new BlockchainWithGasSponsorship(contract);
             } else {
                 blockchain = new Blockchain(contract);

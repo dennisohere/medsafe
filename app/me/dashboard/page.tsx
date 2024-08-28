@@ -18,9 +18,6 @@ const DashboardPage = () => {
             if(blockchain == null) return ;
             const exists = await blockchain.doesUserProfileExist(wallet!.address);
             console.log('exists', exists);
-            // const data = await $fetch(`/api/blockchain/test`, {});
-            // console.log('getPatient', data);
-            // await new BlockchainApi().getPatient(user.id);
             setProfileExists(exists);
             setLoading(false);
         }
