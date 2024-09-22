@@ -11,6 +11,7 @@ export interface IAppState {
     blockchain?: Blockchain | undefined;
     displayName?: string | undefined | null;
     selectedDashboardTab: AllowedAuthNavLink;
+    walletBalance: number;
 }
 
 const initialState: IAppState = {
@@ -20,6 +21,7 @@ const initialState: IAppState = {
     blockchain: undefined,
     displayName: undefined,
     selectedDashboardTab: 'Home',
+    walletBalance: 0,
 };
 
 export const appSlice = createSlice({
@@ -44,7 +46,10 @@ export const appSlice = createSlice({
         },
         setSelectedDashboardTab: (state, action: PayloadAction<AllowedAuthNavLink>) => {
             state.selectedDashboardTab = action.payload;
-            console.log(state.selectedDashboardTab);
+        },
+        setWalletBalance: (state, action: PayloadAction<number>) => {
+            state.walletBalance = action.payload;
+            console.log('wallet balance: ', state.walletBalance);
         }
     },
 });
@@ -55,6 +60,7 @@ export const {
     setWallet,
     setBlockchain,
     setDisplayName,
-    setSelectedDashboardTab
+    setSelectedDashboardTab,
+    setWalletBalance
 } = appSlice.actions;
 export const appReducer = appSlice.reducer;

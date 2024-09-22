@@ -1,7 +1,7 @@
 require("@nomicfoundation/hardhat-toolbox");
 require('dotenv').config()
 
-const { SEPOLIA_API_URL, POLYGON_AMOY_API_URL, ACCOUNT_PRIVATE_KEY } = process.env;
+const { SEPOLIA_API_URL, POLYGON_AMOY_API_URL, ADMIN_WALLET_PRIVATE_KEY } = process.env;
 
 /** @type import('hardhat/config').HardhatUserConfig */
 module.exports = {
@@ -10,11 +10,11 @@ module.exports = {
     sepolia: {
       // chainId: 11155111,
       url: SEPOLIA_API_URL,
-      accounts: [`${ACCOUNT_PRIVATE_KEY}`],
+      accounts: [`${ADMIN_WALLET_PRIVATE_KEY}`],
     },
     polygonAmoy: {
       url: POLYGON_AMOY_API_URL,
-      accounts: [`${ACCOUNT_PRIVATE_KEY}`],
+      accounts: [`${ADMIN_WALLET_PRIVATE_KEY}`],
     },
   }
 };

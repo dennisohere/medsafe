@@ -4,6 +4,7 @@ import Link from "next/link";
 import {useAppSelector} from "@/store/store";
 import {useRouter} from "next/navigation";
 import {Badge} from "@/components/ui/badge";
+import WalletFundSeeder from "@/components/wallet_fund_seeder";
 
 const Navbar = () => {
     const {ready, authenticated, logout} = usePrivy();
@@ -61,7 +62,9 @@ const Navbar = () => {
                                 </div>
                                 <ul
                                     tabIndex={0}
-                                    className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow">
+                                    className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-72 p-2 shadow">
+                                    <WalletFundSeeder />
+                                    <div className='divider m-0 py-2'></div>
                                     <li><Link href=''>Dashboard</Link></li>
                                     <li onClick={logoutUser}><span className='text-rose-800'>Logout</span></li>
                                 </ul>

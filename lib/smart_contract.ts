@@ -18,7 +18,12 @@ export const initializeContract = async (wallet: ConnectedWallet, selectedNetwor
 
     const contract = new ethers.Contract(contractAddress, abi, signer);
 
-    const usePaymaster = !!process.env.usePaymaster;
+    const usePaymaster = process.env.usePaymaster == 'true';
+
+    const getWalletBalance = async () => {
+        const balance = await provider.getBalance(wallet.address)
+        return ethers.utils.formatEther(balance);
+    }
 
     return {
         contract,
@@ -26,5 +31,7 @@ export const initializeContract = async (wallet: ConnectedWallet, selectedNetwor
         provider,
         signer,
         usePaymaster,
+        getWalletBalance,
     };
 }
+

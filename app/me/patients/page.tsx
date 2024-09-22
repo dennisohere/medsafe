@@ -13,13 +13,11 @@ import {ArrowLeft, Plus} from "lucide-react";
 import {
     Dialog,
     DialogContent,
-    DialogDescription, DialogFooter,
+    DialogDescription,
     DialogHeader,
     DialogTitle,
     DialogTrigger
 } from '@/components/ui/dialog';
-import {Label} from "@/components/ui/label";
-import {Input} from "@/components/ui/input";
 import RenderMedicalRecordForm from "@/components/render_medical_record_form";
 
 const ManagePatientMedicalRecords = () => {

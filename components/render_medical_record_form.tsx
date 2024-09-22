@@ -46,7 +46,7 @@ const RenderMedicalRecordForm = ({patientUserId}: {patientUserId: string}) => {
 
         form.reset();
         setButtonState('initial');
-        router.refresh();
+        // router.refresh();
     }
 
 

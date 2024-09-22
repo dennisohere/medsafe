@@ -119,12 +119,13 @@ contract MedSafe {
         _;
     }
 
-    modifier onlyAuthorisedPhysician(string memory patientUserId, string memory physicianUserId) {
+    modifier onlyAuthorisedPhysician(string memory patientUserId) {
+        string memory physicianUserId = addressToUserId[msg.sender];
         require(bytes(authorisedPhysicians[patientUserId]).length == bytes(physicianUserId).length, 'Physician is not authorised by patient');
         _;
     }
 
-    function addPatient(string memory userId, PatientProfile memory patientData) public onlyOwner_Patient() {
+    function addPatient(string memory userId, PatientProfile memory patientData) public {
         Patient storage patient = patients[userId];
         patient.userId = userId;
         patient.profile = patientData;
@@ -172,7 +173,7 @@ contract MedSafe {
     }
 
     function addPhysician(string memory userId, string memory firstName, string memory lastName, string memory email,
-        string memory gender, string memory specialty) external onlyOwner_Physician() {
+        string memory gender, string memory specialty) external {
         Physician storage physician = physicians[userId];
         physician.userId = userId;
         physician.firstName = firstName;
@@ -254,8 +255,7 @@ contract MedSafe {
 
     function addMedicalRecords(
         string memory patientUserId,
-        string memory physicianUserId,
-        MedicalRecord memory medicalRecord) external onlyAuthorisedPhysician(patientUserId, physicianUserId) {
+        MedicalRecord memory medicalRecord) external onlyAuthorisedPhysician(patientUserId) {
 
         MedicalRecord[] storage medicalRecords = patientUserIdToMedicalRecords[patientUserId];
 

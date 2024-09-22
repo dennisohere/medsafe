@@ -7,8 +7,8 @@ import {selectedChain} from "@/lib/supported_chains";
 
 export class BlockchainWithGasSponsorship extends Blockchain {
 
-    constructor(contract: ethers.Contract) {
-        super(contract);
+    constructor(contract: ethers.Contract, selectedChainId: string, getWalletBalance: any) {
+        super(contract, selectedChainId, getWalletBalance);
     }
 
     async send(tx: ethers.PopulatedTransaction) {
@@ -76,7 +76,6 @@ export class BlockchainWithGasSponsorship extends Blockchain {
     async addMedicalRecord(patientUserId:string, physicianUserId:string, diagnosis: string, treatment: string): Promise<void> {
         const tx = await this.contract.populateTransaction.addMedicalRecords(
             patientUserId,
-            physicianUserId,
             [0, 0, diagnosis, treatment, physicianUserId],
         );
 

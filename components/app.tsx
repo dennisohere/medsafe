@@ -2,7 +2,7 @@ import React, {useEffect} from 'react'
 import {Provider, useDispatch} from "react-redux";
 import {ConnectedWallet, usePrivy, useWallets} from "@privy-io/react-auth";
 import {initializeContract} from "@/lib/smart_contract";
-import {setAuthenticated, setBlockchain, setDisplayName, setUser, setWallet} from "@/store/appSlice";
+import {setAuthenticated, setBlockchain, setDisplayName, setUser, setWallet, setWalletBalance} from "@/store/appSlice";
 import {selectedChain} from "@/lib/supported_chains";
 import {Blockchain} from "@/lib/services/blockchain";
 import {BlockchainWithGasSponsorship} from "@/lib/services/blockchain_with_gas_sponsorship";
@@ -26,18 +26,21 @@ const App = ({children}: Readonly<{ children: React.ReactNode; }>) => {
         dispatch(setDisplayName(userEmail));
 
         if(!!wallet){
-            const {contract, usePaymaster} = await initializeContract(wallet, selectedChain!.id!.toString())
+            const {contract, usePaymaster, getWalletBalance} = await initializeContract(wallet, selectedChain!.id!.toString())
             let blockchain;
             if(usePaymaster){
-                blockchain = new BlockchainWithGasSponsorship(contract);
+                blockchain = new BlockchainWithGasSponsorship(contract, selectedChain!.id!.toString(), getWalletBalance);
             } else {
-                blockchain = new Blockchain(contract);
+                blockchain = new Blockchain(contract, selectedChain!.id!.toString(), getWalletBalance);
             }
             if(!!user){
                 await blockchain.initUserRole(user.id);
             }
             console.log('app:', blockchain, contract)
             dispatch(setBlockchain(blockchain));
+
+            const bal = await blockchain.getWalletBalance()
+            dispatch(setWalletBalance(parseFloat(bal)));
         }
 
     }

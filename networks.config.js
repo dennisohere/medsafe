@@ -5,13 +5,15 @@ export const networkConfig = {
         "medSafe": {
             "address": process.env.localhostDeploymentAddress
         },
-        "explorerURL": "#"
+        "explorerURL": "#",
+        "rpcURL": "#",
     },
     "80002": {
         "medSafe": {
             "address": process.env.polygonAmoyDeploymentAddress
         },
-        "explorerURL": "https://www.oklink.com/amoy/",
+        "explorerURL": "https://www.oklink.com/amoy/tx/",
+        "rpcUrl": process.env.polygonAmoyApiUrl,
         "paymaster": {
             "bundlerUrl": process.env.polygonAmoyBundlerUrl,
             "apiKey": process.env.polygonAmoyPaymasterApiKey
@@ -21,7 +23,8 @@ export const networkConfig = {
         "medSafe": {
             "address": process.env.sepoliaDeploymentAddress
         },
-        "explorerURL": "https://sepolia.etherscan.io/",
+        "explorerURL": "https://sepolia.etherscan.io/tx/",
+        "rpcUrl": process.env.sepoliaApiUrl,
         "paymaster": {
             "bundlerUrl": process.env.sepoliaBundlerUrl,
             "apiKey": process.env.sepoliaPaymasterApiKey

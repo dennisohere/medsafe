@@ -1,17 +1,22 @@
 import {ethers} from "ethers";
 import {IMedicalRecord, IPatientData, IPhysicianData} from "@/lib/types";
-import {BiconomySmartAccountV2, PaymasterMode} from "@biconomy/account";
+import {networkConfig} from "@/networks.config";
+
 
 export class Blockchain {
     contract: ethers.Contract;
     currentUserRole?: number | undefined;
-
+    selectedChainId: string;
+    getWalletBalance: any;
 
     USER_PATIENT = 1;
     USER_PHYSICIAN = 2;
 
-    constructor(contract: ethers.Contract) {
+    constructor(contract: ethers.Contract, selectedChainId: string, getWalletBalance: any) {
         this.contract = contract;
+        this.selectedChainId = selectedChainId;
+        this.getWalletBalance = getWalletBalance;
+        this.initEventListeners();
     }
 
     async addPatient(userId: string,
@@ -36,6 +41,8 @@ export class Blockchain {
 
         console.log('tx:addPatient', tx);
 
+        // @ts-ignore
+        console.log('verify-transaction', networkConfig[this.selectedChainId].explorerURL + tx.hash)
     }
 
     async getPatient(userId: string): Promise<IPatientData> {
@@ -88,6 +95,8 @@ export class Blockchain {
         await tx.wait();
 
         console.log('tx:addPhysician', tx);
+        // @ts-ignore
+        console.log('verify-transaction', networkConfig[this.selectedChainId].explorerURL + tx.hash)
 
     }
 
@@ -124,6 +133,8 @@ export class Blockchain {
     async setPatientAuthorisedPhysician(patientUserId: string, physicianUserId: string) {
         const tx = await this.contract.setPatientAuthorisedPhysician(patientUserId, physicianUserId);
         console.log('tx:setPatientAuthorisedPhysician', tx);
+        // @ts-ignore
+        console.log('verify-transaction', networkConfig[this.selectedChainId].explorerURL + tx.hash)
     }
 
     async getPatientAuthorisedPhysician(): Promise<IPhysicianData | null | undefined> {
@@ -141,6 +152,8 @@ export class Blockchain {
         } catch (error){
             console.error('Physician not found!', error);
         }
+
+        return null;
     }
 
     async revokePatientAuthorisedPhysician() {
@@ -175,11 +188,13 @@ export class Blockchain {
     async addMedicalRecord(patientUserId:string, physicianUserId:string, diagnosis: string, treatment: string): Promise<void> {
         const tx = await this.contract.addMedicalRecords(
             patientUserId,
-            physicianUserId,
             [0, 0, diagnosis, treatment, physicianUserId],
         );
 
         await tx.wait();
+
+        // @ts-ignore
+        console.log('verify-transaction', networkConfig[this.selectedChainId].explorerURL + tx.hash)
 
         console.log('tx:addMedicalRecord', tx);
     }
@@ -201,5 +216,41 @@ export class Blockchain {
         console.log('tx:getPatientRecords', medicalRecords);
 
         return medicalRecords;
+    }
+
+    initEventListeners() {
+        this.contract.on('MedicalRecord_Saved', (from, to, amount, event) => {
+            console.log('MedicalRecord_Saved', from, to, amount, event);
+        })
+    }
+
+    async seedFundToWallet(recipient: string) {
+        // @ts-ignore
+        const rpcUrl = networkConfig[this.selectedChainId].rpcUrl;
+        const adminWalletPrivateKey = process.env.adminWalletPrivateKey;
+
+        const provider = new ethers.providers.JsonRpcProvider(rpcUrl)
+        //
+        // // create wallet using private address and provider
+        const wallet = new ethers.Wallet(adminWalletPrivateKey!, provider)
+        //
+        const amountInEther = '0.001'
+        //
+        // // transaction data, recipient and value in wei
+        const txData = {
+            to: recipient,
+            value: ethers.utils.parseEther(amountInEther)// eth to wei
+        }
+        console.log(`Sending ${amountInEther}eth to ${recipient}`)
+
+        // send transaction with the wallet
+        const tx = await wallet.sendTransaction(txData)
+        console.log(`Waiting tx... ${tx.hash}`)
+
+        // wait transaction to confirm at least 1 block
+        const finishedTx = await tx.wait()
+        console.log(`Tx executed ${finishedTx}`, finishedTx)
+        // @ts-ignore
+        console.log('verify-transaction', networkConfig[this.selectedChainId].explorerURL + finishedTx.hash)
     }
 }
